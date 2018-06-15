@@ -8,3 +8,15 @@ create table admin(--관리자 테이블
 );
 
 select * from admin;
+insert into admin (admin_no,
+                   admin_id,
+                   admin_pwd,
+                   admin_name,
+                   admin_date
+                   )
+           values (1,
+                   "ADMIN",
+                   "ADMIN",
+                   "관리자",
+                   SYSDATE
+                   );

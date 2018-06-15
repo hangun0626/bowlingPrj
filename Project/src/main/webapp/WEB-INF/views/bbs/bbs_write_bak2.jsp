@@ -4,10 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <title>자료실 글쓰기</title>
-<link rel="stylesheet" type="text/css" 
-href="/resources/css/bbs.css" />
-<script src="/resources/js/jquery.js"></script>
-<script src="/resources/js/bbs.js"></script>
+<link rel="stylesheet" type="text/css" href="/resources/css/bbs.css" />
+<script src="<c:url value="/resources/js/jquery.js"/>"></script>
+<script src="<c:url value="/resources/js/bbs.js"/>"></script>
 </head>
 <body>
  <div id="bsW_wrap">
