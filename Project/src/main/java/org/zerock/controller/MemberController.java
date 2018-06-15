@@ -54,8 +54,8 @@ public class MemberController {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out=response.getWriter();
 		
-MemberVO db_id=this.memberService.idcheck(id);//회원아이디
-//중복검색
+		MemberVO db_id=this.memberService.idcheck(id);//회원아이디
+		//중복검색
         int re=-1;//중복 아이디가 없을때는 -1을 반환
         if(db_id != null) {//중복 아이디가 있다면
         	re=1;
@@ -85,9 +85,9 @@ MemberVO db_id=this.memberService.idcheck(id);//회원아이디
 			ZipcodeVO2 z2=new ZipcodeVO2();
 			
 			z2.setZipcode(z.getZipcode());//우편번호
-z2.setAddr(z.getSido()+" "+z.getGugun()+" "+z.getDong());
-//시도 구군 동을 저장
-zlist2.add(z2);//컬렉션에 추가
+			z2.setAddr(z.getSido()+" "+z.getGugun()+" "+z.getDong());
+			//시도 구군 동을 저장
+			zlist2.add(z2);//컬렉션에 추가
 		}
 		zm.addAttribute("zipcodelist",zlist2);//zipcodelist
 		//키이름에 가공된 주소목록이 저장됨.
@@ -139,14 +139,13 @@ zlist2.add(z2);//컬렉션에 추가
 			Random r=new Random();
 			int pwd_random=r.nextInt(100000);
 			//임의의 정수 난수를 발생
-String ran_pwd=Integer.toString(pwd_random);//임시 정수 비번
-//을 문자열로 바꿈
-m.setMem_pwd(PwdChange.getPassWordToXEMD5String(ran_pwd));
-//임시 비번 암호화
-this.memberService.updatePwd(m);//임시비번 수정
-
-     fm.addAttribute("ran_pwd",ran_pwd);
-     return "member/pwd_find_ok";
+			String ran_pwd=Integer.toString(pwd_random);//임시 정수 비번
+			//을 문자열로 바꿈
+			m.setMem_pwd(PwdChange.getPassWordToXEMD5String(ran_pwd));
+			//임시 비번 암호화
+			this.memberService.updatePwd(m);//임시비번 수정
+			fm.addAttribute("ran_pwd",ran_pwd);
+			return "member/pwd_find_ok";
 		}
 		return null;
 	}//pwd_find_ok()
@@ -275,9 +274,9 @@ this.memberService.updatePwd(m);//임시비번 수정
 			out.println("alert('다시 로그인 하세요!');");
 			out.println("location='member_login';");
 			out.println("</script>");
-		}else {
+		} else {
 			m.setMem_id(id);
-m.setMem_pwd(PwdChange.getPassWordToXEMD5String(
+			m.setMem_pwd(PwdChange.getPassWordToXEMD5String(
 		m.getMem_pwd()));//정식비번 암호화
         this.memberService.updateMember(m);//정보수정
         /* 문제 풀이)
@@ -336,28 +335,24 @@ m.setMem_pwd(PwdChange.getPassWordToXEMD5String(
 			out.println("location='member_login';");
 			out.println("</script>");
 		}else {
-	del_pwd=PwdChange.getPassWordToXEMD5String(del_pwd);
-	//비번을 암호화
-	MemberVO db_pwd=this.memberService.getMember(id);
-	if(!db_pwd.getMem_pwd().equals(del_pwd)) {
-		out.println("<script>");
-		out.println("alert('비번이 다릅니다!');");
-		out.println("history.back();");
-		out.println("</script>");
-	}else {
-		MemberVO dm=new MemberVO();
-		dm.setMem_id(id); dm.setMem_delcont(del_cont);
-		this.memberService.delMem(dm);//회원탈퇴
-/* 문제풀이) 1. 아이디를 기준으로 탈퇴사유,mem_state=2,
- * mem_deldate 탈퇴날짜를 수정되게 한다.(update) 		
- */
-		session.invalidate();//세션만료
-		
-		out.println("<script>");
-		out.println("alert('회원 탈퇴 했습니다!');");
-		out.println("location='member_login';");
-		out.println("</script>");
-	}
+				del_pwd=PwdChange.getPassWordToXEMD5String(del_pwd);
+				//비번을 암호화
+				MemberVO db_pwd=this.memberService.getMember(id);
+				if(!db_pwd.getMem_pwd().equals(del_pwd)) {
+					out.println("<script>");
+					out.println("alert('비번이 다릅니다!');");
+					out.println("history.back();");
+					out.println("</script>");
+				}else {
+					MemberVO dm=new MemberVO();
+					dm.setMem_id(id); dm.setMem_delcont(del_cont);
+					this.memberService.delMem(dm);//회원탈퇴
+					session.invalidate();//세션만료
+					out.println("<script>");
+					out.println("alert('회원 탈퇴 했습니다!');");
+					out.println("location='member_login';");
+					out.println("</script>");
+				}
 		}
 		return null;
 	}//member_del_ok()	

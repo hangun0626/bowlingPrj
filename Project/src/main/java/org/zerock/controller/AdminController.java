@@ -26,7 +26,7 @@ public class AdminController {
 	@RequestMapping("/admin_index")
 	public ModelAndView admin_index() {
 		return new ModelAndView("admin/admin_index");
-// /WEB-INF/views/admin/admin_index.jsp		
+		// /WEB-INF/views/admin/admin_index.jsp		
 	}
 	
 	//관리자 로그인 인증과 관리자 비번 암호화 */
@@ -93,8 +93,8 @@ this.adminService.adminLogin(ab.getAdmin_id());//관리자 아이디
         out.println("location='admin_index';");
         out.println("</script>");
     }else {
-    	return "admin/admin_main";//WEB-INF/admin/admin_main
-    	//.jsp로 이동
+    	return "admin/admin_main";
+    	//WEB-INF/admin/admin_main.jsp로 이동
     }
     return null;
     }//admin_main()
