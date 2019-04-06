@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="ScoreStats">
+  
+	<!-- 게임참석 회원 보기 -->
+	<select id="scoreStats_li" resultType="scoreStats" parameterType="scoreStats">
+	SELECT memId,memName,sumScore,avgScore,gameCnt,rownum scoreNo
+	  FROM (
+			SELECT MEM_ID memId
+			      ,MEM_NAME memName
+			      ,SUM(GAME_SCORE) sumScore
+			      ,ROUND(AVG(GAME_SCORE),2) avgScore
+			      ,COUNT(*) gameCnt
+			  FROM SCORE_MANAGE
+			 GROUP BY MEM_ID,MEM_NAME
+			 ORDER BY 4 DESC
+	 )
+	</select>
+
+  </mapper>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

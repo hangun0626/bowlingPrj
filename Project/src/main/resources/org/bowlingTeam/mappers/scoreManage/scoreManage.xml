@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="ScoreManage">
+  
+    <!-- 게시물 저장 -->
+    <insert id="scoreManage_in" parameterType="scoreManage">
+     <!-- parameterType속성은 전달인자 타입.생략가능 -->
+     insert into scoreManage (scoreManage_no,scoreManage_name,scoreManage_title,
+     scoreManage_pwd,scoreManage_cont,scoreManage_ref,scoreManage_step,
+     scoreManage_level,scoreManage_date) values(scoreManage_no_seq.nextval,
+     #{scoreManage_name},#{scoreManage_title},#{scoreManage_pwd},#{scoreManage_cont},
+     scoreManage_no_seq.nextval,0,0,sysdate)
+    </insert>
+    
+   <!-- 검색 전후 레코드 개수 -->
+    <select id="scoreManage_row" parameterType="scoreManage" 
+    resultType="int">
+     select count(scoreManage_no) from scoreManage
+     <where>
+     <if test="find_field == ''">
+      <!-- 검색조건이 없어서 총레코드 개수 -->
+     </if>
+     <if test="find_field == 'scoreManage_title'">
+      <!-- 검색 조건이 제목인 경우 -->
+      scoreManage_title like #{find_name} <!-- like는 오라클 검색
+      연산자 -->
+     </if>
+     <if test="find_field == 'scoreManage_cont'">
+      scoreManage_cont like #{find_name}
+     </if>
+     </where>
+    </select>
+    
+    <!-- 조회수 증가 -->
+    <update id="scoreManage_hi" parameterType="int">
+     update scoreManage set scoreManage_hit=scoreManage_hit+1 
+     where scoreManage_no=#{scoreManage_no}
+    </update>
+    
+    <!-- 내용보기 -->
+    <select id="scoreManage_co" resultType="scoreManage">
+     select * from scoreManage where scoreManage_no=#{scoreManage_no}
+    </select>
+    
+    <!-- 게시판 수정 -->
+    <update id="scoreManage_up" parameterType="scoreManage">
+     update scoreManage set scoreManage_name=#{scoreManage_name},
+     scoreManage_title=#{scoreManage_title},scoreManage_cont=#{scoreManage_cont}
+     where scoreManage_no=#{scoreManage_no}
+    </update>
+    
+    <!-- 게시판 삭제 -->
+    <delete id="scoreManage_del" parameterType="int">
+     delete from scoreManage where scoreManage_no=#{scoreManage_no}
+    </delete>
+  </mapper>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

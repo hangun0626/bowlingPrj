@@ -30,7 +30,7 @@
 		있다.JSP확장자 설정부분 -->
 	</beans:bean>
 	
-	<context:component-scan base-package="org.zerock.controller" />
+	<context:component-scan base-package="org.bowlingTeam.controller" />
 	<!-- <annotation-driven>과 함께 결합해서 base-package속성에
 설정한 패키지 내부의 컨트롤 클래스를 자동으로 찾아서 애노테이션이
 처리가 된 컨트롤 클래스를 스프링에서 인식할 수 있게 하는 부분

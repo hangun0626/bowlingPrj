@@ -25,9 +25,22 @@ drop sequence board_no_seq;
 
 select board_no_seq.nextval from dual;
 
+     select * from 
+     (select rowNum rNum,
+             board_no,
+             board_name,
+             board_title,
+     		board_hit,
+     		board_ref,
+     		board_step,
+     		board_level,
+     		board_date
+     from (select * 
+             from board 
+            order by board_ref desc,board_level asc)) 
+     where rNum >= 0 and rNum <= 10
 
-
-
+select count(board_no) from board
 
 
 

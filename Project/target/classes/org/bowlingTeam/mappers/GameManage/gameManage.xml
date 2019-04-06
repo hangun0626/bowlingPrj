@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="GameManage">
+    <!-- 게임 참석 -->
+    <insert id="gameManage_attend" parameterType="gameManage">
+     <!-- parameterType속성은 전달인자 타입.생략가능 -->
+     insert into GAME_MEMBER (GAME_MEM_ID,
+                              GAME_ID,
+                              MEM_ID,
+                              MEM_NAME,
+                              WRIGHT_DATE) 
+     values(GAME_MEM_ID_SEQ.nextval,
+            #{gameId},
+            #{memId},
+            #{memName},
+            sysdate)
+    </insert>
+     <!-- 게임 _점수INSERT -->
+    <insert id="gameManage_insertScore" parameterType="gameManage">
+     <!-- parameterType속성은 전달인자 타입.생략가능 -->
+     insert into SCORE_MANAGE (SCORE_ID,
+                                GAME_ID,
+                                MEM_ID,
+                                MEM_NAME,
+                                WRIGHT_DATE) 
+     values(SCORE_ID_SEQ.nextval,
+            #{gameId},
+            #{memId},
+            #{memName},
+            sysdate)
+    </insert>
+  	
+  	<!-- 참석취소 -->
+    <insert id="gameManage_cancle" parameterType="gameManage">
+     delete from GAME_MEMBER where GAME_ID = #{gameId} AND MEM_ID = #{memId}
+    </insert>
+    <!-- 점수 삭제 -->
+    <delete id="gameManage_deleteScore" parameterType="gameManage">
+     delete from SCORE_MANAGE where GAME_ID = #{gameId} and MEM_ID=#{memId}
+    </delete>
+    
+    <!-- 게임 게시 -->
+    <insert id="gameManage_in" parameterType="gameManage">
+     <!-- parameterType속성은 전달인자 타입.생략가능 -->
+     insert into GAME_MANAGE (GAME_ID,
+                             GAME_NM,
+                             GAME_CONT,
+                             GAME_DTIME,
+                             GAME_GB_CD,
+                             CLUB_ID,
+                             WRIGHTER_ID,
+                             WRIGHTER_NM,
+                             WRIGHT_DATE) 
+     values(GAME_ID_SEQ.nextval,
+            #{gameNm},
+            #{gameCont},
+            #{gameDtime},
+            '01',
+            1,
+            '',
+            #{wrighterNm},
+            sysdate)
+    </insert>
+    
+    <!-- 게임리스트 -->
+    <select id="gameManage_li" resultType="gameManage" parameterType="gameManage">
+     <!-- resultType은 반환 타입,parameterType은 전달인자 타입
+     (생략가능) -->
+     select * 
+       from (select ROWNUM rNum,
+                    GAME_ID gameID,
+                    GAME_NM gameNm,
+					GAME_CONT gameCont,
+                    WRIGHTER_NM wrighterNm,
+                    WRIGHT_DATE wrighterDate,
+                    GAME_DTIME gameDtime
+               from (select * 
+                       from GAME_MANAGE     
+				     <where>
+				     <if test="find_field == ''">
+				      <!-- 검색조건이 없어서 총레코드 개수 -->
+				     </if>
+				     <if test="find_field == 'GAME_NM'">
+				      <!-- 검색 조건이 게임명인 경우 -->
+				      GAME_NM like #{find_name}
+				     </if>
+				     <if test="find_field == 'WRIGHTER_NM'">
+				      WRIGHTER_NM like #{find_name}
+				     </if>
+				     </where>     
+				      order by WRIGHT_DATE desc
+				      )
+			) 
+     where rNum &gt;= #{startrow} and rNum &lt;= #{endrow}
+<!-- &gt;은 ~보다 크다(>), &lt;은 ~보다 작다(<) -->     
+    </select>
+    
+    <select id="scoreManage_li" resultType="gameManage" parameterType="gameManage">
+	SELECT ROWNUM rank
+	       ,TEAM_NM teamNm
+	       ,MEM_ID memId
+	       ,MEM_NAME memName
+	       ,GAME1 game1
+	       ,GAME2 game2
+	       ,GAME3 game3
+	       ,AVG_GAME_SCORE avgGameScore
+	       ,TOTAL_SCORE totalScore
+	       ,HANDICAP handicap
+	  FROM (SELECT *
+			 FROM (SELECT A.TEAM_NM
+			             ,A.MEM_ID
+			             ,A.MEM_NAME
+			             ,SUM(CASE WHEN GAME_SEQ = 1 THEN A.GAME_SCORE ELSE 0 END) GAME1
+			             ,SUM(CASE WHEN GAME_SEQ = 2 THEN A.GAME_SCORE ELSE 0 END) GAME2
+			             ,SUM(CASE WHEN GAME_SEQ = 3 THEN A.GAME_SCORE ELSE 0 END) GAME3
+			             ,ROUND(AVG(A.GAME_SCORE),1) AVG_GAME_SCORE
+			             ,SUM(A.GAME_SCORE) TOTAL_SCORE
+			             ,SUM(CASE WHEN A.GAME_SEQ = 1 THEN A.HANDICAP ELSE 0 END) HANDICAP
+			         FROM SCORE_MANAGE A
+			        WHERE A.GAME_ID = #{gameId}
+			        GROUP BY A.TEAM_NM,A.MEM_ID,A.MEM_NAME)
+			 ORDER BY AVG_GAME_SCORE DESC)
+    </select>
+    <select id="scoreManage_reg" resultType="gameManage" parameterType="gameManage">
+			       SELECT A.TEAM_NM teamNm
+			             ,B.MEM_ID memId
+			             ,B.MEM_NAME memName
+			             ,A.GAME_SCORE gameScore
+			         FROM SCORE_MANAGE A, GAME_MEMBER B
+			        WHERE B.GAME_ID = #{gameId}
+			          AND A.GAME_SEQ(+) = #{gameRound}
+			          AND A.GAME_ID(+) = B.GAME_ID
+			          AND A.MEM_ID(+)  = B.MEM_ID
+			        ORDER BY A.TEAM_NM,A.GAME_SCORE,B.MEM_NAME
+    </select>
+    
+    <select id="gameMem_reg" resultType="gameManage" parameterType="gameManage">
+			        SELECT MEM_ID memId
+			              ,MEM_NAME memName
+			          FROM MEMBER
+			         ORDER BY MEM_NAME
+    </select>
+    
+    <!-- 검색 전후 레코드 개수 -->
+    <select id="gameManage_row" parameterType="gameManage" resultType="int">
+     select count(*) from GAME_MANAGE
+     <where>
+     <if test="find_field == ''">
+      <!-- 검색조건이 없어서 총레코드 개수 -->
+     </if>
+     <if test="find_field == 'gameNm'">
+      <!-- 검색 조건이 제목인 경우 -->
+      GAME_NM like #{find_name} <!-- like는 오라클 검색
+      연산자 -->
+     </if>
+     <if test="find_field == 'gameManage_cont'">
+      WRIGHTER_NM like #{find_name}
+     </if>
+     </where>
+    </select>
+    
+    <!-- 내용보기 -->
+    <select id="gameManage_co" resultType="gameManage" parameterType="gameManage">
+     select B.GAME_ID gameId,
+            B.GAME_NM gameNm,
+            B.GAME_CONT gameCont,
+            B.GAME_DTIME gameDtime,
+            B.GAME_GB_CD gameGbCd,
+            B.CLUB_ID clubId,
+            B.WRIGHTER_ID wrighterId,
+            B.WRIGHTER_NM wrighterNm,
+            B.WRIGHT_DATE wrightDate,
+            #{memId} memId,
+            (select count(*) 
+                from GAME_MEMBER A 
+               WHERE A.MEM_ID = #{memId}
+                 AND A.GAME_ID = B.GAME_ID) attendYn  ,
+            UPDATE_DATE updateDate
+       from GAME_MANAGE B
+      where B.GAME_ID=#{gameId}
+    </select>
+    
+    <!-- 게시판 수정 -->
+    <update id="gameManage_up" parameterType="gameManage">
+     update GAME_MANAGE set gameManage_name=#{gameManage_name},
+     gameManage_title=#{gameManage_title},gameManage_cont=#{gameManage_cont}
+     where gameManage_no=#{gameManage_no}
+    </update>
+    
+    <!-- 게시판 삭제 -->
+    <delete id="gameManage_del" parameterType="int">
+     delete from GAME_MANAGE where GAME_ID=#{gameId}
+    </delete>
+
+    
+	<!-- 게임참석 회원 보기 -->
+	<select id="gameMem_li" resultType="gameManage" parameterType="gameManage">
+	SELECT RTRIM(LISTAGG(MEM_NAME || ', ') WITHIN GROUP(ORDER BY 1),', ') memList
+	  FROM GAME_MEMBER 
+	 WHERE GAME_ID=#{gameId}
+	 GROUP BY GAME_ID
+	</select>
+
+    <delete id="scoreManage_regReadyDel" parameterType="gameManage">
+    	delete from SCORE_MANAGE where GAME_ID = #{gameId} AND GAME_SEQ = #{gameSeq}
+    </delete>
+
+	<!-- 게임점수 저장 -->
+	<insert id="regScoreInsert" parameterType="gameManage">
+	INSERT INTO SCORE_MANAGE (SCORE_ID,GAME_ID,MEM_ID,MEM_NAME,GAME_SCORE,GAME_SEQ) 
+	VALUES
+	    (SCORE_ID_SEQ.nextval, '${gameId}', '${regScoreMemIdOne}', '${regScoreMemNmOne}'
+	    , '${regScoreOne}', '${gameSeq}')
+	</insert>
+	
+	<!-- 관리자 게임참석인원 저장 -->
+	<insert id="regGameMemInsert" parameterType="gameManage">
+	 insert into GAME_MEMBER (GAME_MEM_ID,
+	      GAME_ID,
+	      MEM_ID,
+	      MEM_NAME,
+	      WRIGHT_DATE)
+     SELECT GAME_MEM_ID_SEQ.nextval,
+            #{gameId} as gameId,
+            MEM_ID, 
+            MEM_NAME ,
+            sysdate
+       FROM MEMBER 
+      WHERE MEM_ID = #{regGameMemCheckIdOne}
+            
+	</insert>
+    
+  </mapper>

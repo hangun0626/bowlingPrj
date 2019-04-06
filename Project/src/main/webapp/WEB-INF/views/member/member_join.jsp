@@ -1,60 +1,67 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Bootstrap core CSS -->
+   <%--  <link href="<c:url value='/resources/vendor/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"> --%>
+    <!-- Custom fonts for this template -->
+   <%--  <link href="<c:url value='/resources/vendor/font-awesome/css/font-awesome.min.css'/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'/>" rel="stylesheet" type="text/css">
+ --%>
+    <!-- Plugin CSS -->
+  <%--   <link href="<c:url value='/resources/vendor/magnific-popup/magnific-popup.css'/>" rel="stylesheet"> --%>
+    <!-- Custom styles for this template -->
+ <%--    <link href="<c:url value='/resources/css/creative.min.css'/>" rel="stylesheet"> --%>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    
 <meta charset="UTF-8">
 <title>회원가입 폼</title>
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/member.css"/>" />
 <script src="<c:url value="/resources/js/jquery.js"/>"></script>
 <script src="<c:url value="/resources/js/member.js"/>"></script>
 
 </head>
 <body>
  <div id="mJoin_wrap">
-  <h2 class="mJoin_title">회원가입</h2>
-  <form name="m" method="post" action="member_join_ok" 
-  onsubmit="return join_check();">
-   <table id="mJoin_t">
+ <br/>
+  <h2 class = "text-center">회원가입</h2>
+  <br/>
+  <form name="m" method="post" action="member_join_ok" onsubmit="return join_check();">
+   <table id="mJoin_t" class="table table-hover">
     <tr>
-     <th>회원아이디</th>
-     <td>
-      <input name="mem_id" id="mem_id" size="14" class="input_box" />
-      <input type="button" value="아이디중복체크" class="input_b"
-      onclick="id_check();">
-      <br/>
+    <td>
+      <input class="form-control" name="mem_id" id="mem_id" type="text" placeholder="아이디">
       <span id="idcheck"></span>
-      </td>
+    </td>
+    <td>
+    <input type="button" value="아이디중복체크" class="btn btn-primary disabled" onclick="id_check();">
+    
+    </td>
     </tr>
     <tr>
-     <th>비밀번호</th>
      <td>
-     <input type="password" name="mem_pwd" id="mem_pwd" size="14"
-     class="input_box" />
+     <input class="form-control" colspan="2" name="mem_pwd" id="mem_pwd" type="password" size="14" placeholder="Password">
      </td>
     </tr>
     <tr>
-     <th>비밀번호확인</th>
      <td>
-     <input type="password" name="mem_pwd2" id="mem_pwd2" size="14"
-     class="input_box" />
+     <input class="form-control" colspan="2" type="password" name="mem_pwd2" id="mem_pwd2" size="14" placeholder="Password 확인" />
      </td>
     </tr>
     <tr>
-     <th>회원이름</th>
-     <td>
-     <input name="mem_name" id="mem_name" size="14" 
-     class="input_box" />
+    <td>
+     <input class="form-control" colspan="3" name="mem_name" id="mem_name" placeholder="회원이름"/>
      </td>
     </tr>
-    <tr>
+<%--     <tr>
      <th>우편번호</th>
      <td>
      <input name="mem_zip" id="mem_zip" size="3"
      class="input_box" readonly />-
      <input name="mem_zip2" id="mem_zip2" size="3"
      class="input_box" readonly />
-     <%-- readonly 속성은 읽기만 가능. --%>
+     readonly 속성은 읽기만 가능.
      <input type="button" value="우편검색" class="input_b"
      onclick="post_check();" />
      </td>
@@ -73,8 +80,8 @@
      />
      </td>
     </tr>
-    <tr>
-     <th>폰번호</th>
+    <tr> --%>
+<%--      <th>폰번호</th>
      <td>
      <select name="mem_phone01" id="mem_phone01">
      <c:forEach var="p" items="${phone}">
@@ -83,7 +90,7 @@
      </select>-<input name="mem_phone02" id="mem_phone02" size="4"
      maxlength="4" class="input_box" />-<input name="mem_phone03"
      id="mem_phone03" size="4" maxlength="4" class="input_box" />
-     <%-- maxlength="4"로 지정하면 최대 4자까지만 입력가능 --%>
+     <!-- maxlength="4"로 지정하면 최대 4자까지만 입력가능 -->
      </td> 
     </tr>
     <tr>
@@ -98,12 +105,11 @@
       </c:forEach>
      </select>
      </td>
-    </tr>
+    </tr> --%>
    </table>
    <div id="mJoin_menu">
-   <input type="submit" value="가입" class="input_b" />
-   <input type="reset" value="취소" class="input_b"
-   onclick="$('#mem_id').focus();" />
+   <input type="submit" value="가입" class="btn btn-primary btn-lg btn-block"/>
+   <input type="reset" value="취소" class="btn btn-primary btn-lg btn-block" onclick="$('#mem_id').focus();" />
    </div>
   </form>
  </div>

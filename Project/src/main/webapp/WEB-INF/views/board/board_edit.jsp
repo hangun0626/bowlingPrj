@@ -4,20 +4,26 @@
 <head>
 <meta charset="UTF-8">
 <title>사용자 게시판 수정폼</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap-reboot.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap-4.1.1-dist/css/bootstrap-grid.css">
+    
+
 <script src="/resources/js/jquery.js"></script>
 <script src="/resources/js/board.js"></script>
-<link rel="stylesheet" type="text/css" 
-href="/resources/css/board.css" />
+<link rel="stylesheet" type="text/css" href="/resources/css/board.css" />
 </head>
 <body>
  <div id="bWrite_wrap">
   <h2 class="bWrite_title">게시판 수정폼</h2>
-  <form method="post" action="board_edit_ok"
-  onsubmit="return bw_check();">
-  <input type="hidden" name="board_no" 
-  value="${b.board_no}" />
-  <input type="hidden" name="page" 
-  value="${page}" />
+  <form method="post" action="board_edit_ok" onsubmit="return bw_check();">
+  <input type="hidden" name="board_no" value="${b.board_no}" />
+  <input type="hidden" name="page" value="${page}" />
    <table id="bWrite_t">
     <tr>
      <th>이름</th>
@@ -50,13 +56,19 @@ href="/resources/css/board.css" />
    </table>
    <div id="bWrite_menu">
     <input type="submit" value="수정" />
-    <input type="reset" value="취소" 
-    onclick="$('#board_name').focus();" />
-    <input type="button" value="목록"
-    onclick="location='board_list?page=${page}';" />
+    <input type="reset" value="취소" onclick="$('#board_name').focus();" />
+    <input type="button" value="목록" onclick="location='board_list?page=${page}';" />
    </div>
   </form>
  </div>
+ 
+     <!-- Bootstrap core JavaScript -->
+    <script src="<c:url value="/resources/bootstrap-4.1.1-dist/js/bootstrap.min.js" />"></script>
+    <script src="<c:url value="/resources/bootstrap-4.1.1-dist/js/bootstrap.js" />"></script>
+    <script src="<c:url value="/resources/bootstrap-4.1.1-dist/js/bootstrap.bundle.min.js" />"></script>
+    <script src="<c:url value="/resources/bootstrap-4.1.1-dist/js/bootstrap.bundle.js" />"></script>
+    
+ 
 </body>
 </html>
 

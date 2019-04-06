@@ -48,7 +48,7 @@ function join_check(){
 	//	$("#mem_addr2").val("").focus();
 	//	return false;
 	//}
-	if($.trim($("#mem_phone02").val())==""){
+/*	if($.trim($("#mem_phone02").val())==""){
 		alert("폰번호를 입력하세요!");
 		$("#mem_phone02").val("").focus();
 		return false;
@@ -66,7 +66,7 @@ function join_check(){
 	if($.trim($("#mail_domain").val())==""){
 		alert("전자우편을 입력하세요!");		
 		return false;
-	}
+	}*/
 }
 
 //중복아이디 검색
@@ -76,8 +76,8 @@ function id_check(){
 	//아이디 영역을 숨김
 	$mem_id=$.trim($("#mem_id").val());
 	//1.입력글자 길이 체크
-	if($mem_id.length < 4){
-		$newtext='<font color="red" size="3"><b>아이디는 4자 이상이어야 합니다.</b></font>';
+	if($mem_id.length < 3){
+		$newtext='<font color="red" size="3"><b>아이디는 3자 이상이어야 합니다.</b></font>';
 		$("#idcheck").text('');
 		//idcheck 아이디 영역 문자열을 초기화
 		$("#idcheck").show();
@@ -151,8 +151,7 @@ function validate_userid($mem_id)
 //우편검색 창
 function post_check(){
 	$url="zip_find";//매핑주소
-	window.open($url,"우편검색","width=415px,height=190px,"
-			+"scrollbars=yes");
+	window.open($url,"우편검색","width=415px,height=190px,"+"scrollbars=yes");
 	//폭이 415 픽셀이고,높이가 190 픽셀,스크롤바가 생성되는
 	//우편번호 검색 공지창을 띄운다.
 }
@@ -200,7 +199,7 @@ function edit_check(){
 		$("#mem_name").val("").focus();
 		return false;
 	}
-	if($.trim($("#mem_zip").val())==""){
+/*	if($.trim($("#mem_zip").val())==""){
 		alert("우편번호를 입력하세요!");		
 		return false;
 	}
@@ -235,7 +234,7 @@ function edit_check(){
 	if($.trim($("#mail_domain").val())==""){
 		alert("전자우편을 입력하세요!");		
 		return false;
-	}
+	}*/
 }//edit_check()
 
 
